@@ -1,0 +1,5 @@
+docker-compose.yaml
+
+# airflow
+airflow/data-engineering-batch6/
+airflow/logs
