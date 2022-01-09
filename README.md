@@ -1,84 +1,177 @@
 # project_etl_01_movie
 
 
+## Keyword
+
+### Github
+
+- Github에 프로젝트 올리기
+
+### Docker
+
+- Docker를 통해 로컬 개발 환경 구성하기
+
+### ETL
+
+- Data_Pipeline 구성하기
+- Airflow 활용하기
+
+---
 
 ## GOAL
 
-1. container를 활용한 환경 구성
-    1. Cloud native env을 사용하기 전(비용 필요) container(docker/k8s)에 익숙해 지기 위함
-    2. 과정들을 정리하여 기록하기(개념/명령어/trouble_shooting)
-2. 실제 데이터 대상으로 ETL 수행
-    1. 예제 샘플이 아니라 실제 API로 제공되는 데이터를 정하고 ETL과정을 통해 수집
-    2. 데이터는 일정 기준을 갖고 SUMMARY TABLE 만들기
-    
-    → 실 데이터를 사용함으로써 ETL 작업의 감을 익히기
-    
-3. ETL 결과 데이터를 활용한 시각화
-    1. 간단한 그래프형태라도 SUMMARY TABLE의 데이터를 시각화 하기
-
-### summary_goal
-
-앞으로 포트폴리오 프로젝트의 시작이 되는 것으로 과정을 기록하고 github에 잘 정리하여 올려보자
-
--> readme.md 에 해당 프로젝트에 대한 기록 남기기
-
-→ git에 branch를 만들어가며 진행
-
-- testor : 기능 추가시 사용
-- refactor : 추가 기능 정리 시 사용
-- main : 기능 완성 때마다 사용
-
-순서 : testor → refactor → main
+1. Github
+    1. Github / Git 에 익숙해지기
+    2. 프로젝트를 기록하기
+2. Docker
+    1. Container 기반 환경 구축에 익숙해지기
+    2. 구성하며 기록하여 정리하기(개념/명령어/trouble_shooting)
+3. ETL
+    1. API를 통해 제공되는 데이터를 수집하여 적재하는 데이터 파이프라인 만들기
+    2. Airflow를 통한 구동
 
 ---
 
 ## TECH_STACK
 
-### Docker & Docker-compose
+### Version_Control
 
-### GIT
+- git
+    - create repo in github
+    - clone repo in local develop
+    - build code to github
 
-### AIRFLOW
+### ENV
 
-### SUPERSET
+- docker
+    - compose image
+    - use resource with container
+    - connect network with another container
+
+### DB
+
+- postgres(OLTP)
+    - store of extract and transform data
+    - create summary table
+
+### Workflow
+
+- Airflow
+    - create dag for etl
+    - setting config(airflow.cfg)
 
 ---
 
-## PROCESS
+## Subject
 
-### subject
+### 영화 뭐보지? 일단 순위보고 결정해!
 
-- 일별 박스오피스 데이터 수집
-    - API REF : [https://www.kobis.or.kr/kobisopenapi/homepg/apiservice/searchServiceInfo.do](https://www.kobis.or.kr/kobisopenapi/homepg/apiservice/searchServiceInfo.do)
-    - EXAMPLE : [http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=f5eef3421c602c6cb7ea224104795888&targetDt=20120101](http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=f5eef3421c602c6cb7ea224104795888&targetDt=20120101)
-    - ETL :
-        1.  매일 영화 데이터(박스 오피스 10위)를 받아 수집 후 특정 필드만 파싱하여 DB에 저장
-        2.  SUMMARY TABLE 만들기 
-- 시각화
-    - SUMMARY TABLE 을 활용한 SUPERSET 시각화
-    
+<aside>
+💡 일별 박스오피스 데이터 수집 ETL 만들기
+
+</aside>
+
+영화 뭐보지 고민중인 당신! 
+
+그렇다면 대세를 따르면 평타는 치잖아요 그러니 일단 데이터를 보고 사람들이 많이 보는 것 중 골라보는건 어떨까요??
+
+### 데이터 정보
+
+- 수집 데이터 : KOBIS 일별 박스오피스
+- 생성 주기 : 1일
+- 응답 형식 : JSON / XML
+- 예시 : [http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=f5eef3421c602c6cb7ea224104795888&targetDt=20120101](http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=f5eef3421c602c6cb7ea224104795888&targetDt=20120101)
+
+### 환경(by Docker)
+
+- Language : Python
+- DB : Postgres
+- Scheduler : Airflow
 
 ### ETL
 
-**일별 박스오피스 수집**
+- Extract
+    - API로부터 데이터 수집
+- Transfrom
+    - 필요한 필드만 추출
+- Load
+    - DB(Postgres)에 적재
 
-1. KEY 발급
-2. API 제공 인터페이스 확인
-3. 사용할 필드 선택
-4. MOVIE INFO COLLECTING DAG CODING
-5. 결과 확인
+---
 
-**CREATE SUMMARY TABLE** 
+## Process
 
-1. SUMMARY TABLE 대상 필드 및 시나리오 수립
-2. SUMMARY TABLE DAG CODING
-3. CEHCK RESULT DATA
+### Setting_env
 
-### anaytsis
+**GIT**
 
-**VIEW CHART USING PRESET.IO**
+- [x]  Make repo in github
+- [x]  clone repo in local
+    - add .gitignore
+    - make the branch _ testor / refactor / main
 
-1. CHECK CONNECTION WITH POSTGRES IN DOCKER
-2. MAKE CHART
-3. COMPOSE DASHBOARD
-4. DONE
+**DOCKER**
+
+Construct AIRFLOW 
+
+- [x]  find image for airflow
+- [x]  acquire properties meaning
+- [x]  run image
+
+Construct DB(Postgres)
+
+- [x]  Find image for postgres
+    - ID/PW : root / 1234
+    - contianerID = pg_container
+- [x]  acquire properties meaning
+    - comment in docker-compose.yaml
+- [x]  run image
+- [x]  test connection with airflow
+    - register connection in Airflow WEB UI & test done
+
+### ETL
+
+Coding DAG
+
+1. issue the API KEY
+    1. official ref : [http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.**json**?key=f5eef3421c602c6cb7ea224104795888&targetDt=20120101](http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=f5eef3421c602c6cb7ea224104795888&targetDt=20120101)
+2. select field for parse
+    - rank(int) : 관객수
+    - movieCd(varchar(8)) : 영화대표코드
+    - salesAmt(bigint) : 해당일 매출액
+    - autiCnt(int) : 해당일 관객수
+    - scrnCnt(int) : 해당일 스크린수
+    - showCnt(int) : 해당일 상영수
+    - updated_date(date) : 데이터 수집 일자
+3. extract part
+4. transform part
+5. load part
+6. 
+
+---
+
+### TROUBLE_SHOOTING
+
+---
+
+### THOUGHTS
+
+### Github의 작지만 위대한 시작
+
+항상 말로만 Github에 프로젝트를 올려야지 생각했고 회사에서 일을 할 때나 개인적으로 무언가를 만들어볼 때 사용하지 않았다. 프로젝트를 올린다는 것이 부담스러운 일이기도 했고 손이 많이 가는 작업이라 생각했기 때문이다. 그러나 개발이ㄹ
+
+### 컨테이너 기반 개발환경 구축
+
+---
+
+## DURING
+
+postges 컨테이너 접속
+
+```bash
+docker exec -it [postgres container id] /bin/bash
+
+# psql 접속 _ 기본 사용자 = root
+psql [db_name]
+ex) psql postgres // psql dev_db
+```
